@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rashan &amp; Taniya — Wedding Invitation</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%234a2c10'/%3E%3Ccircle cx='32' cy='32' r='29' fill='none' stroke='%23c8965a' stroke-width='2.5'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Georgia,serif' font-size='26' fill='%23ecc580'%3ERT%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#fdf8f2;
+  --beige:#f5ede0;
+  --gold:#c8965a;
+  --gold-deep:#a07040;
+  --brown:#6b3f20;
+  --brown-deep:#4a2c10;
+  --ink:#3e2a14;
+  --muted:#8a6a50;
+  --flame1:#ffd98a;
+  --flame2:#f0a040;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--cream);color:var(--ink);
+  font-family:'EB Garamond',serif;font-size:18px;line-height:1.7;
+  overflow-x:hidden;
+}
+body.locked{overflow:hidden;}
+img{max-width:100%;display:block;}
+
+.caps{font-family:'Marcellus',serif;text-transform:uppercase;}
+.script{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;}
+
+/* ════════ LAMP OPENING SCREEN ════════ */
+#lampScreen{
+  position:fixed;inset:0;z-index:600;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:28px 22px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(200,150,90,.14), transparent 55%),
+    var(--brown-deep);
+  transition:opacity 1.1s ease;
+}
+#lampScreen.gone{opacity:0;pointer-events:none;}
+
+.lamp-logo{
+  width:clamp(92px,20vw,128px);height:auto;display:block;
+  margin-bottom:14px;
+  filter:drop-shadow(0 4px 18px rgba(200,150,90,.35));
+}
+.lamp-word{
+  font-family:'Marcellus',serif;font-size:.7rem;
+  letter-spacing:.5em;text-transform:uppercase;
+  color:rgba(200,150,90,.75);margin-bottom:42px;text-align:center;padding:0 24px;
+}
+
+.lamp-wrap{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.lamp-wrap:focus-visible{outline:2px solid var(--gold);outline-offset:14px;border-radius:8px;}
+
+/* glow that ignites — sits BEHIND the lamp, never over it */
+.lamp-glow{
+  position:absolute;top:6%;left:50%;z-index:0;
+  width:170%;aspect-ratio:1/1;
+  transform:translate(-50%,-32%) scale(.2);
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,200,110,.5), rgba(240,160,64,.18) 45%, transparent 70%);
+  opacity:0;transition:opacity 1.2s ease, transform 1.4s ease;
+  pointer-events:none;
+}
+#lampScreen.lit .lamp-glow{opacity:1;transform:translate(-50%,-32%) scale(1.6);}
+
+.lamp-svg{
+  position:relative;z-index:1;
+  width:clamp(140px,30vw,210px);
+  max-height:52vh;
+  display:block;filter:drop-shadow(0 14px 36px rgba(0,0,0,.4));
+}
+
+.flame{
+  opacity:0;
+  transform-box:fill-box;          /* measure transforms against the flame itself */
+  transform-origin:50% 100%;       /* grow from the wick, not the lamp base */
+  transform:scale(.1);
+  will-change:transform,opacity;
+}
+#lampScreen.lit .flame{
+  opacity:1;
+  animation:ignite .7s ease forwards, flicker 1.7s .7s ease-in-out infinite;
+}
+@keyframes ignite{from{opacity:0;transform:scale(.1);}to{opacity:1;transform:scale(1);}}
+@keyframes flicker{
+  0%,100%{transform:scale(1) skewX(0deg);}
+  30%{transform:scale(1.06,1.12) skewX(-2deg);}
+  60%{transform:scale(.96,.94) skewX(2deg);}
+}
+
+.lamp-cue{
+  margin-top:40px;font-family:'Marcellus',serif;font-size:.72rem;
+  letter-spacing:.4em;text-transform:uppercase;color:var(--gold);
+  animation:pulse 2.4s ease-in-out infinite;text-align:center;padding:0 24px;
+}
+@keyframes pulse{0%,100%{opacity:.45;}50%{opacity:1;}}
+#lampScreen.lit .lamp-cue{animation:none;opacity:0;transition:opacity .5s;}
+
+.lamp-blessing{
+  margin-top:26px;max-width:520px;text-align:center;
+  font-style:italic;color:rgba(253,248,242,.55);font-size:1rem;
+  opacity:0;transition:opacity 1s .6s ease;padding:0 14px;
+}
+#lampScreen.lit .lamp-blessing{opacity:1;}
+
+/* ════════ INVITATION ════════ */
+#inv{opacity:0;transform:translateY(28px);transition:opacity 1.1s ease,transform 1.1s ease;}
+#inv.open{opacity:1;transform:translateY(0);}
+
+/* HERO */
+.hero{
+  position:relative;min-height:100vh;min-height:100svh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url('Gemini_Generated_Image_x0bk1sx0bk1sx0bk.png') center/cover;
+}
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(253,248,242,.55), rgba(253,248,242,.15) 40%, rgba(253,248,242,.7));
+}
+.hero-in{position:relative;z-index:2;padding:90px 26px;max-width:760px;}
+
+.hero-eyebrow{
+  font-family:'Marcellus',serif;font-size:.72rem;letter-spacing:.5em;
+  text-transform:uppercase;color:var(--gold-deep);
+  opacity:0;animation:rise 1s .4s ease forwards;
+}
+.hero-betel{
+  font-style:italic;color:var(--muted);font-size:1.05rem;margin-top:14px;
+  opacity:0;animation:rise 1s .7s ease forwards;
+}
+.hero-names{
+  margin:28px 0 10px;line-height:1;
+  opacity:0;animation:rise 1.1s 1s ease forwards;
+}
+.hero-names .nm{
+  display:block;font-family:'Marcellus',serif;
+  font-size:clamp(2.6rem,9vw,5.4rem);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--brown-deep);
+}
+.hero-names .joins{
+  display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+  font-size:clamp(1.7rem,5vw,2.7rem);color:var(--gold-deep);
+  margin:10px 0;
+}
+/* DATE BLOCK — the eye-catcher */
+.date-block{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(18px,4vw,38px);
+  margin-top:30px;
+  opacity:0;animation:rise 1s 1.4s ease forwards;
+}
+.db-side{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.db-rule{width:1px;height:clamp(22px,4vw,34px);background:var(--gold);}
+.db-word{
+  font-family:'Marcellus',serif;font-size:clamp(.7rem,1.8vw,.85rem);
+  letter-spacing:.3em;text-transform:uppercase;color:var(--brown);
+  writing-mode:horizontal-tb;white-space:nowrap;
+}
+.db-mid{
+  display:flex;flex-direction:column;align-items:center;line-height:1;
+  padding:0 clamp(14px,3vw,26px);
+  border-left:1px solid rgba(200,150,90,.55);
+  border-right:1px solid rgba(200,150,90,.55);
+}
+.db-month{
+  font-family:'Marcellus',serif;font-size:clamp(.72rem,2vw,.95rem);
+  letter-spacing:.42em;text-transform:uppercase;color:var(--gold-deep);
+  margin-bottom:6px;text-indent:.42em; /* optically center the tracked text */
+}
+.db-day{
+  font-family:'Marcellus',serif;
+  font-size:clamp(4rem,13vw,6.4rem);
+  color:var(--brown-deep);
+  text-shadow:0 3px 18px rgba(200,150,90,.25);
+}
+.db-year{
+  font-family:'Marcellus',serif;font-size:clamp(.85rem,2.4vw,1.1rem);
+  letter-spacing:.5em;color:var(--brown);margin-top:8px;text-indent:.5em;
+}
+.hero-orn{opacity:0;animation:rise 1s 1.2s ease forwards;}
+@keyframes rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+
+.scroll-cue{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:rise 1s 2.2s ease forwards;
+}
+.scroll-cue i{
+  width:1px;height:46px;display:block;
+  background:linear-gradient(to bottom, var(--gold), transparent);
+  animation:drip 2s ease-in-out infinite;
+}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+.scroll-cue span{font-family:'Marcellus',serif;font-size:.6rem;letter-spacing:.35em;color:var(--gold-deep);text-transform:uppercase;}
+
+/* liya-vela ornament */
+.liya{display:block;margin:0 auto;width:min(280px,70vw);height:auto;}
+
+/* SECTION SHELL */
+section{padding:88px 26px;}
+.shell{max-width:880px;margin:0 auto;}
+.sec-eyebrow{
+  font-family:'Marcellus',serif;font-size:.68rem;letter-spacing:.48em;
+  text-transform:uppercase;color:var(--gold-deep);text-align:center;
+}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-weight:400;
+  font-size:clamp(2.6rem,7vw,4rem);color:var(--brown);
+  text-align:center;margin:8px 0 14px;
+}
+
+/* INVITATION WORDS */
+.words-sec{background:var(--cream);text-align:center;}
+.words-text{
+  max-width:560px;margin:30px auto 0;font-size:1.22rem;line-height:2.05;color:var(--muted);
+}
+.words-text em{color:var(--brown);}
+.betel-note{
+  margin-top:34px;display:inline-flex;align-items:center;gap:12px;
+  font-style:italic;color:var(--gold-deep);font-size:1rem;
+}
+
+/* TWIN ARCH PORTRAITS */
+.arch-sec{background:#fff;text-align:center;}
+.arch-row{
+  display:flex;justify-content:center;align-items:flex-start;
+  gap:clamp(22px,4vw,44px);flex-wrap:wrap;margin-top:46px;
+}
+.arch-frame{
+  position:relative;width:min(340px,86vw);margin:0;
+  padding:12px 12px 18px;
+  border:1px solid rgba(200,150,90,.5);
+  border-radius:200px 200px 16px 16px;
+  background:rgba(253,248,242,.6);
+}
+.arch-frame::before{
+  content:'';position:absolute;inset:6px;
+  border:1px solid rgba(200,150,90,.28);
+  border-radius:194px 194px 12px 12px;pointer-events:none;
+}
+.arch-frame img{
+  width:100%;border-radius:188px 188px 8px 8px;
+  box-shadow:0 16px 44px rgba(160,112,64,.18);
+}
+.arch-caption{
+  margin-top:16px;font-style:italic;color:var(--muted);font-size:1.02rem;
+}
+
+/* CEREMONY TIMELINE */
+.order-sec{
+  position:relative;background:var(--beige);overflow:hidden;
+}
+.order-sec::before{
+  content:'';position:absolute;inset:0;
+  background:url('Gemini_Generated_Image_x0bk1sx0bk1sx0bk.png') center/cover;opacity:.06;
+}
+.order-in{position:relative;z-index:1;}
+/* VENUE + MAP */
+.venue-sec{background:var(--cream);text-align:center;}
+.venue-city{
+  font-family:'Marcellus',serif;font-size:.8rem;letter-spacing:.4em;
+  text-transform:uppercase;color:var(--muted);margin-top:4px;
+}
+.venue-words{
+  max-width:480px;margin:24px auto 0;font-style:italic;
+  color:var(--muted);font-size:1.1rem;line-height:1.9;
+}
+.map-wrap{
+  width:min(680px,100%);margin:36px auto 30px;
+  border:1px solid rgba(200,150,90,.5);border-radius:18px;
+  padding:8px;background:#fff;
+  box-shadow:0 14px 44px rgba(160,112,64,.14);
+}
+.map-wrap iframe{
+  display:block;width:100%;height:340px;border:0;border-radius:12px;
+  filter:sepia(.18) saturate(.92);
+}
+.btn-gold{
+  background:var(--gold);color:#fff;border:1.5px solid var(--gold);
+}
+.btn-gold:hover{background:transparent;color:var(--gold-deep);}
+
+.timeline{position:relative;max-width:560px;margin:0 auto;}
+.timeline::before{
+  content:'';position:absolute;left:11px;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(to bottom, transparent, var(--gold) 12%, var(--gold) 88%, transparent);
+}
+.t-item{position:relative;padding:0 0 44px 52px;}
+.t-item:last-child{padding-bottom:0;}
+.t-item::before{
+  content:'';position:absolute;left:7px;top:9px;
+  width:9px;height:9px;background:var(--gold);transform:rotate(45deg);
+}
+.t-time{
+  font-family:'Marcellus',serif;font-size:.72rem;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold-deep);
+}
+.t-name{font-family:'Marcellus',serif;font-size:1.25rem;color:var(--brown-deep);margin:4px 0 4px;letter-spacing:.05em;}
+.t-desc{color:var(--muted);font-size:1rem;font-style:italic;}
+
+/* COUNTDOWN */
+.cd-sec{
+  position:relative;background:var(--brown-deep);text-align:center;overflow:hidden;
+}
+.cd-sec::before{
+  content:'';position:absolute;inset:0;
+  background:url('Gemini_Generated_Image_x0bk1sx0bk1sx0bk.png') center/cover;opacity:.05;
+}
+.cd-in{position:relative;z-index:1;}
+.cd-sec .sec-eyebrow{color:var(--gold);}
+.cd-sec .sec-title{color:var(--cream);}
+.cd-grid{
+  display:flex;justify-content:center;align-items:baseline;
+  gap:clamp(10px,4vw,40px);flex-wrap:wrap;margin-top:44px;
+}
+.cd-box{min-width:74px;}
+.cd-num{
+  font-family:'Marcellus',serif;
+  font-size:clamp(2.8rem,9vw,5rem);color:var(--cream);line-height:1;display:block;
+  font-variant-numeric:tabular-nums;
+}
+.cd-lbl{
+  font-family:'Marcellus',serif;font-size:.6rem;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--gold);margin-top:10px;display:block;
+}
+.cd-dot{color:rgba(200,150,90,.45);font-size:clamp(1.6rem,5vw,3rem);font-family:'Marcellus',serif;}
+.cd-done{
+  display:none;margin-top:40px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+  font-size:clamp(2rem,6vw,3rem);color:var(--gold);
+}
+.cd-sec.finished .cd-grid{display:none;}
+.cd-sec.finished .cd-done{display:block;}
+
+/* RSVP */
+.rsvp-sec{
+  position:relative;background:var(--brown);text-align:center;overflow:hidden;
+}
+.rsvp-sec::before{
+  content:'';position:absolute;inset:0;
+  background:url('Gemini_Generated_Image_x0bk1sx0bk1sx0bk.png') center/cover;opacity:.07;
+}
+.rsvp-in{position:relative;z-index:1;}
+.rsvp-sec .sec-eyebrow{color:var(--gold);}
+.rsvp-sec .sec-title{color:var(--cream);}
+.rsvp-note{color:rgba(253,248,242,.75);font-style:italic;margin:18px 0 38px;font-size:1.1rem;}
+.btn-row{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;}
+.btn-wa{
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-wa svg{width:17px;height:17px;flex:none;}
+.rsvp-small{margin-top:26px;font-style:italic;color:rgba(253,248,242,.55);font-size:.95rem;}
+.btn{
+  display:inline-block;padding:15px 40px;border-radius:50px;
+  font-family:'Marcellus',serif;font-size:.76rem;letter-spacing:.26em;text-transform:uppercase;
+  text-decoration:none;transition:background .3s,color .3s,border-color .3s;
+}
+.btn-solid{background:var(--gold);color:var(--brown-deep);border:1.5px solid var(--gold);}
+.btn-solid:hover{background:transparent;color:var(--gold);}
+.btn-line{border:1.5px solid rgba(200,150,90,.6);color:var(--gold);}
+.btn-line:hover{background:var(--gold);color:var(--brown-deep);border-color:var(--gold);}
+
+/* FOOTER */
+.footer-sec{
+  position:relative;text-align:center;padding:70px 26px 56px;overflow:hidden;
+}
+.footer-sec::before{
+  content:'';position:absolute;inset:0;
+  background:url('Gemini_Generated_Image_x0bk1sx0bk1sx0bk.png') center bottom/cover;opacity:.28;
+}
+.footer-in{position:relative;z-index:1;}
+.footer-names{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(2.4rem,7vw,3.6rem);color:var(--brown);}
+.footer-meta{
+  font-family:'Marcellus',serif;font-size:.72rem;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--muted);margin-top:14px;line-height:2;
+}
+.footer-flame{margin-top:18px;font-size:1.2rem;}
+
+/* MUSIC */
+#musicBtn{
+  position:fixed;top:18px;right:18px;z-index:700;
+  width:44px;height:44px;border-radius:50%;
+  border:1.5px solid var(--gold);background:rgba(253,248,242,.92);
+  cursor:pointer;display:none;align-items:center;justify-content:center;
+  font-size:1.05rem;box-shadow:0 4px 16px rgba(160,112,64,.25);
+  transition:transform .2s;
+}
+#musicBtn.show{display:flex;}
+#musicBtn:hover{transform:scale(1.08);}
+
+/* SCROLL REVEAL */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.14s;}
+.rv.d2{transition-delay:.28s;}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.2s!important;}
+  .rv{opacity:1;transform:none;}
+  html{scroll-behavior:auto;}
+}
+
+/* ════════ RESPONSIVE ════════ */
+
+/* never allow sideways scroll */
+html,body{max-width:100vw;}
+
+/* Tablets (portrait & small laptops) */
+@media (max-width:900px){
+  section{padding:78px 28px;}
+  .hero-in{padding:80px 24px;}
+  .arch-frame{width:min(400px,80vw);}
+}
+
+/* Phones */
+@media (max-width:560px){
+  body{font-size:17px;}
+  section{padding:64px 20px;}
+  .hero-in{padding:70px 18px;}
+  .hero-names .nm{letter-spacing:.1em;}
+  .words-text{font-size:1.1rem;line-height:1.95;}
+  .cd-dot{display:none;}
+  .cd-grid{gap:22px;}
+  .cd-box{min-width:64px;}
+  .btn{width:100%;max-width:320px;}
+  .timeline{max-width:100%;}
+  .t-item{padding-left:42px;}
+  .arch-frame{padding:10px;}
+  .venue-line{margin:22px 0 44px;}
+  .footer-meta{letter-spacing:.18em;}
+}
+
+/* Small phones */
+@media (max-width:380px){
+  body{font-size:16px;}
+  .hero-names .nm{font-size:2.3rem;letter-spacing:.08em;}
+  .date-block{gap:14px;}
+  .db-word{letter-spacing:.18em;}
+  .db-month{letter-spacing:.28em;text-indent:.28em;}
+  .db-year{letter-spacing:.34em;text-indent:.34em;}
+  .sec-eyebrow{letter-spacing:.32em;}
+  .cd-num{font-size:2.5rem;}
+  .cd-grid{gap:16px;}
+  .t-name{font-size:1.12rem;}
+  .lamp-word{letter-spacing:.34em;}
+  .betel-note{font-size:.9rem;}
+}
+
+/* Short / landscape phones — keep the whole lamp scene in view */
+@media (max-height:660px){
+  .lamp-logo{width:clamp(70px,14vh,96px);margin-bottom:8px;}
+  .lamp-word{margin-bottom:18px;}
+  .lamp-svg{width:clamp(110px,22vh,160px);max-height:42vh;}
+  .lamp-cue{margin-top:18px;}
+  .lamp-blessing{margin-top:14px;font-size:.9rem;}
+}
+@media (max-height:480px) and (orientation:landscape){
+  .lamp-svg{max-height:38vh;}
+  .lamp-blessing{display:none;}
+  .hero{min-height:120vh;}
+}
+</style>
+</head>
+<body class="locked">
+
+<button id="musicBtn" aria-label="Toggle music">🎵</button>
+<audio id="bgMusic" loop preload="none">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"/>
+</audio>
+
+<!-- ════════ OPENING: LIGHT THE LAMP ════════ -->
+<div id="lampScreen">
+  <svg class="lamp-logo" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="R and T monogram">
+    <defs>
+      <linearGradient id="lgGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e2b878"/><stop offset=".5" stop-color="#c8965a"/><stop offset="1" stop-color="#9a6830"/>
+      </linearGradient>
+      <linearGradient id="lgBright" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f6dca0"/><stop offset=".45" stop-color="#dcaa64"/><stop offset="1" stop-color="#a87838"/>
+      </linearGradient>
+    </defs>
+    <circle cx="512" cy="512" r="484" fill="none" stroke="url(#lgGold)" stroke-width="10"/>
+    <circle cx="512" cy="512" r="452" fill="none" stroke="url(#lgGold)" stroke-width="3" opacity=".7"/>
+    <text x="312" y="684" text-anchor="middle" font-family="Marcellus,serif" font-size="420" fill="url(#lgGold)">R</text>
+    <text x="712" y="684" text-anchor="middle" font-family="Marcellus,serif" font-size="420" fill="url(#lgGold)">T</text>
+    <text x="512" y="716" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-weight="600" font-size="310" fill="url(#lgBright)">&amp;</text>
+  </svg>
+  <div class="lamp-word">A Wedding Invitation</div>
+
+  <div class="lamp-wrap" id="lampWrap" role="button" tabindex="0" aria-label="Light the lamp to open the invitation">
+    <div class="lamp-glow"></div>
+    <svg class="lamp-svg" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="brass" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0"   stop-color="#8a5c28"/>
+          <stop offset=".45" stop-color="#e0b060"/>
+          <stop offset=".6"  stop-color="#c8965a"/>
+          <stop offset="1"   stop-color="#7a4f20"/>
+        </linearGradient>
+        <radialGradient id="flameG" cx=".5" cy=".75" r=".8">
+          <stop offset="0"  stop-color="#fff3cf"/>
+          <stop offset=".4" stop-color="#ffd98a"/>
+          <stop offset="1"  stop-color="#f0a040"/>
+        </radialGradient>
+      </defs>
+
+      <!-- flame -->
+      <g class="flame">
+        <path d="M100 18 C92 34 86 44 86 56 a14 14 0 0 0 28 0 C114 44 108 34 100 18 Z" fill="url(#flameG)"/>
+        <path d="M100 36 C96 44 94 50 94 56 a6 6 0 0 0 12 0 C106 50 104 44 100 36 Z" fill="#fff6dd" opacity=".9"/>
+      </g>
+
+      <!-- wick cup -->
+      <path d="M88 66 q12 8 24 0 l-3 10 q-9 5 -18 0 Z" fill="url(#brass)"/>
+
+      <!-- oil bowl with spouts -->
+      <path d="M52 84 q-14 0 -10 10 q4 8 18 12 h80 q14 -4 18 -12 q4 -10 -10 -10 Z" fill="url(#brass)" stroke="#5e3a14" stroke-width="1"/>
+      <path d="M52 84 q-22 -8 -30 2 q12 -2 22 6" fill="none" stroke="url(#brass)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M148 84 q22 -8 30 2 q-12 -2 -22 6" fill="none" stroke="url(#brass)" stroke-width="5" stroke-linecap="round"/>
+
+      <!-- stem -->
+      <rect x="93" y="106" width="14" height="22" fill="url(#brass)"/>
+      <ellipse cx="100" cy="132" rx="26" ry="7" fill="url(#brass)" stroke="#5e3a14" stroke-width=".8"/>
+      <rect x="94" y="138" width="12" height="34" fill="url(#brass)"/>
+      <ellipse cx="100" cy="176" rx="20" ry="6" fill="url(#brass)" stroke="#5e3a14" stroke-width=".8"/>
+      <rect x="95" y="180" width="10" height="40" fill="url(#brass)"/>
+      <ellipse cx="100" cy="224" rx="30" ry="8" fill="url(#brass)" stroke="#5e3a14" stroke-width=".8"/>
+      <rect x="94" y="230" width="12" height="30" fill="url(#brass)"/>
+
+      <!-- base -->
+      <path d="M58 282 q0 -20 42 -20 q42 0 42 20 Z" fill="url(#brass)" stroke="#5e3a14" stroke-width="1"/>
+      <ellipse cx="100" cy="286" rx="56" ry="10" fill="url(#brass)" stroke="#5e3a14" stroke-width="1"/>
+      <ellipse cx="100" cy="296" rx="68" ry="11" fill="url(#brass)" stroke="#5e3a14" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <p class="lamp-cue" id="lampCue">✦ Tap to light the lamp ✦</p>
+  <p class="lamp-blessing">As the flame is lit, so begins a new life together.</p>
+</div>
+
+<!-- ════════ INVITATION ════════ -->
+<div id="inv">
+
+  <section class="hero" style="padding:0;">
+    <div class="hero-in">
+      <p class="hero-eyebrow">Together with their families</p>
+      <p class="hero-betel">with a sheaf of betel and hearts full of joy</p>
+      <h1 class="hero-names">
+        <span class="nm">Rashan</span>
+        <span class="joins">weds</span>
+        <span class="nm">Taniya</span>
+      </h1>
+      <div class="hero-orn">
+        <svg class="liya" viewBox="0 0 280 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="none" stroke="#c8965a" stroke-width="1.1">
+            <path d="M10 15 q30 -14 60 0 q30 14 60 0 q30 -14 60 0 q30 14 60 0"/>
+            <path d="M70 15 q-7 -9 -14 -3 q7 7 14 3 Z" fill="#c8965a" stroke="none"/>
+            <path d="M210 15 q7 9 14 3 q-7 -7 -14 -3 Z" fill="#c8965a" stroke="none"/>
+          </g>
+          <circle cx="140" cy="15" r="3.4" fill="#c8965a"/>
+          <circle cx="10"  cy="15" r="2"   fill="#c8965a"/>
+          <circle cx="270" cy="15" r="2"   fill="#c8965a"/>
+        </svg>
+      </div>
+      <div class="date-block" id="dateBlock" aria-label="Wedding date">
+        <div class="db-side">
+          <span class="db-rule"></span>
+          <span class="db-word" id="dbWeekday">Sunday</span>
+          <span class="db-rule"></span>
+        </div>
+        <div class="db-mid">
+          <span class="db-month" id="dbMonth">February</span>
+          <span class="db-day" id="dbDay">15</span>
+          <span class="db-year" id="dbYear">2026</span>
+        </div>
+        <div class="db-side">
+          <span class="db-rule"></span>
+          <span class="db-word" id="dbTime">9.00 AM</span>
+          <span class="db-rule"></span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><i></i></div>
+  </section>
+
+  <!-- THE INVITATION -->
+  <section class="words-sec">
+    <div class="shell">
+      <p class="sec-eyebrow rv">The Invitation</p>
+      <h2 class="sec-title rv d1">You Are Warmly Invited</h2>
+      <p class="words-text rv d2">
+          We found love, and now it's time to celebrate it.
+          Join us as we exchange vows, create memories, and begin our next adventure together.
+          We would be honored to have you with us on our wedding day.
+      </p>
+      <!-- <p class="betel-note rv d2">🌿 &nbsp;Bulath athak suba pathum — with betel and best wishes&nbsp; 🌿</p> -->
+    </div>
+  </section>
+
+  <!-- COUPLE PORTRAITS IN TWIN KANDYAN ARCHES -->
+  <section class="arch-sec">
+    <div class="shell">
+      <p class="sec-eyebrow rv">The Couple</p>
+      <h2 class="sec-title rv d1">Two Hearts, One Flame</h2>
+      <div class="arch-row">
+        <figure class="arch-frame rv d1">
+          <img src="Gemini_Generated_Image_axidn3axidn3axid.png" alt="Rashan and Taniya"/>
+          <figcaption class="arch-caption">Today &amp; tomorrow</figcaption>
+        </figure>
+        <figure class="arch-frame rv d2">
+          <img src="Gemini_Generated_Image_2pp47e2pp47e2pp4.png" alt="Rashan and Taniya in traditional Kandyan attire"/>
+          <figcaption class="arch-caption">Rooted in tradition</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER OF THE CEREMONY -->
+  <section class="order-sec">
+    <div class="order-in shell">
+      <p class="sec-eyebrow rv">Save the Date</p>
+      <h2 class="sec-title rv d1">Order of the Day</h2>
+
+      <div class="timeline" style="margin-top:48px;">
+        <div class="t-item rv">
+          <div class="t-time">9.00 AM</div>
+          <div class="t-name">Lighting of the Oil Lamp</div>
+          <div class="t-desc">The ceremony begins at the auspicious hour.</div>
+        </div>
+        <div class="t-item rv d1">
+          <div class="t-time">9.30 AM</div>
+          <div class="t-name">Poruwa Ceremony</div>
+          <div class="t-desc">Traditional rites upon the Poruwa, with Jayamangala Gatha blessings.</div>
+        </div>
+        <div class="t-item rv d2">
+          <div class="t-time">10.30 AM</div>
+          <div class="t-name">Signing of the Register</div>
+          <div class="t-desc">The couple is legally wed before family and friends.</div>
+        </div>
+        <div class="t-item rv d2">
+          <div class="t-time">12.00 PM</div>
+          <div class="t-name">Reception &amp; Luncheon</div>
+          <div class="t-desc">Music, milk rice, and merriment — please stay and celebrate with us.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENUE + MAP -->
+  <section class="venue-sec">
+    <div class="shell">
+      <p class="sec-eyebrow rv">The Venue</p>
+      <h2 class="sec-title rv d1">Grand Palace Banquet Hall</h2>
+      <p class="venue-city rv d1">Colombo, Sri Lanka</p>
+      <p class="venue-words rv d1">
+        We can't wait to celebrate with you — a morning of blessings,
+        a table full of food, and a day filled with love and laughter.
+      </p>
+      <div class="map-wrap rv d2">
+        <iframe
+          id="mapFrame"
+          src="https://www.google.com/maps?q=Grand+Palace+Banquet+Hall+Colombo+Sri+Lanka&z=15&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+          title="Map to Grand Palace Banquet Hall, Colombo">
+        </iframe>
+      </div>
+      <a class="btn btn-gold rv d2" id="directionsBtn"
+         href="https://maps.google.com/?q=Grand+Palace+Banquet+Hall+Colombo+Sri+Lanka"
+         target="_blank" rel="noopener">Get Directions</a>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="cd-sec" id="cdSec">
+    <div class="cd-in shell">
+      <p class="sec-eyebrow rv">Until the Auspicious Hour</p>
+      <h2 class="sec-title rv d1">Counting the Days</h2>
+      <div class="cd-grid rv d2">
+        <div class="cd-box"><span class="cd-num" id="cdD">00</span><span class="cd-lbl">Days</span></div>
+        <span class="cd-dot">·</span>
+        <div class="cd-box"><span class="cd-num" id="cdH">00</span><span class="cd-lbl">Hours</span></div>
+        <span class="cd-dot">·</span>
+        <div class="cd-box"><span class="cd-num" id="cdM">00</span><span class="cd-lbl">Minutes</span></div>
+        <span class="cd-dot">·</span>
+        <div class="cd-box"><span class="cd-num" id="cdS">00</span><span class="cd-lbl">Seconds</span></div>
+      </div>
+      <p class="cd-done rv">The lamp is lit — the day is here! ♥</p>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="rsvp-sec">
+    <div class="rsvp-in shell">
+      <p class="sec-eyebrow rv">Kindly Reply</p>
+      <h2 class="sec-title rv d1">Will You Join Us?</h2>
+      <p class="rsvp-note rv d1" id="rsvpNote">Please send your reply before 1 February 2026.</p>
+      <div class="btn-row rv d2" id="rsvpButtons">
+        <!-- WhatsApp buttons are generated from CONFIG in the script below -->
+      </div>
+      <p class="rsvp-small rv d2">A simple "We'll be there!" makes our day ♥</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-sec">
+    <div class="footer-in rv">
+      <div class="footer-names">Rashan &amp; Taniya</div>
+      <p class="footer-meta" id="footerMeta">15 · 02 · 2026 &nbsp;—&nbsp; Grand Palace Banquet Hall, Colombo</p>
+      <div class="footer-flame">🪔</div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ✏️  EDIT EVERYTHING HERE — nothing else needs to change
+   ═══════════════════════════════════════════════════════════ */
+var CONFIG = {
+  /* Wedding date & time (Sri Lanka time).
+     Format: 'YYYY-MM-DDTHH:MM:00+05:30'
+     NOTE: must be a FUTURE date for the countdown to run.   */
+  weddingDate : '2027-02-15T09:00:00+05:30',
+
+  /* RSVP deadline shown as text */
+  rsvpDeadline: '1 February 2027',
+
+  /* WhatsApp contacts — number in international format, no + or spaces.
+     Example: 0771234567  →  '94771234567'                   */
+  whatsapp: [
+    { name: 'Rashan', number: '94XXXXXXXXX' },
+    { name: 'Taniya', number: '94XXXXXXXXX' }
+  ],
+
+  /* Pre-filled message guests will send */
+  waMessage : "Hi! We would love to attend Rashan & Taniya's wedding \uD83C\uDF89",
+
+  /* Venue (used for footer + map) */
+  venueShort: 'Grand Palace Banquet Hall, Colombo',
+  mapQuery  : 'Grand Palace Banquet Hall Colombo Sri Lanka'
+};
+/* ═══════════════════════════════════════════════════════════ */
+
+(function(){
+  var lit = false;
+  var screenEl = document.getElementById('lampScreen');
+  var lampWrap = document.getElementById('lampWrap');
+  var inv      = document.getElementById('inv');
+  var mBtn     = document.getElementById('musicBtn');
+
+  /* ---------- populate everything from CONFIG ---------- */
+  function applyConfig(){
+    var d = new Date(CONFIG.weddingDate);
+    if(!isNaN(d)){
+      var days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+      var h12  = d.getHours() % 12 || 12;
+      var ampm = d.getHours() >= 12 ? 'PM' : 'AM';
+      var mins = String(d.getMinutes()).padStart(2,'0');
+
+      document.getElementById('dbWeekday').textContent = days[d.getDay()];
+      document.getElementById('dbMonth').textContent   = months[d.getMonth()];
+      document.getElementById('dbDay').textContent     = d.getDate();
+      document.getElementById('dbYear').textContent    = d.getFullYear();
+      document.getElementById('dbTime').textContent    = h12 + '.' + mins + ' ' + ampm;
+
+      document.getElementById('footerMeta').textContent =
+        String(d.getDate()).padStart(2,'0') + ' \u00B7 ' +
+        String(d.getMonth()+1).padStart(2,'0') + ' \u00B7 ' + d.getFullYear() +
+        '\u00A0\u00A0\u2014\u00A0\u00A0' + CONFIG.venueShort;
+    }
+
+    document.getElementById('rsvpNote').textContent =
+      'Please send your reply before ' + CONFIG.rsvpDeadline + '.';
+
+    /* WhatsApp buttons — one per person in CONFIG.whatsapp */
+    var row = document.getElementById('rsvpButtons');
+    row.innerHTML = '';
+    var waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+      '<path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-2-1.2 7.5 7.5 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.6l.4-.5a1.7 1.7 0 0 0 .3-.4.5.5 0 0 0 0-.4c0-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.1 5 5 0 0 0 1.1 2.7 11.4 11.4 0 0 0 4.4 3.9 14.8 14.8 0 0 0 1.5.5 3.6 3.6 0 0 0 1.6.1 2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>';
+    CONFIG.whatsapp.forEach(function(p){
+      var a = document.createElement('a');
+      a.className = 'btn btn-solid btn-wa';
+      a.target = '_blank'; a.rel = 'noopener';
+      a.href = 'https://wa.me/' + p.number + '?text=' + encodeURIComponent(CONFIG.waMessage);
+      a.innerHTML = waIcon + 'RSVP \u2014 ' + p.name;
+      row.appendChild(a);
+    });
+
+    /* Map embed + directions */
+    var q = encodeURIComponent(CONFIG.mapQuery);
+    document.getElementById('mapFrame').src =
+      'https://www.google.com/maps?q=' + q + '&z=15&output=embed';
+    document.getElementById('directionsBtn').href =
+      'https://maps.google.com/?q=' + q;
+  }
+  applyConfig();
+
+  /* ---------- lamp opening ---------- */
+  function lightLamp(){
+    if(lit) return;
+    lit = true;
+    screenEl.classList.add('lit');
+
+    setTimeout(function(){
+      screenEl.classList.add('gone');
+      inv.classList.add('open');
+      mBtn.classList.add('show');
+      document.body.classList.remove('locked');
+      startCountdown();
+      initReveal();
+      setTimeout(function(){ screenEl.style.display = 'none'; }, 1200);
+    }, 2100);
+  }
+
+  lampWrap.addEventListener('click', lightLamp);
+  lampWrap.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); lightLamp(); }
+  });
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  /* ---------- countdown (driven by CONFIG.weddingDate) ---------- */
+  var cdTimer = null;
+  function startCountdown(){
+    var target = new Date(CONFIG.weddingDate);
+    var sec = document.getElementById('cdSec');
+    if(isNaN(target)){ sec.style.display = 'none'; return; }
+    function tick(){
+      var diff = target - new Date();
+      if(diff <= 0){
+        sec.classList.add('finished');
+        if(cdTimer) clearInterval(cdTimer);
+        return;
+      }
+      document.getElementById('cdD').textContent = pad(Math.floor(diff / 86400000));
+      document.getElementById('cdH').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      document.getElementById('cdM').textContent = pad(Math.floor((diff % 3600000) / 60000));
+      document.getElementById('cdS').textContent = pad(Math.floor((diff % 60000) / 1000));
+    }
+    tick();
+    cdTimer = setInterval(tick, 1000);
+  }
+
+  /* ---------- scroll reveal ---------- */
+  function initReveal(){
+    if(!('IntersectionObserver' in window)){
+      document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('on'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.rv').forEach(function(el){ obs.observe(el); });
+  }
+
+  /* ---------- music ---------- */
+  var audio = document.getElementById('bgMusic');
+  var playing = false;
+  mBtn.addEventListener('click', function(){
+    if(playing){
+      audio.pause();
+      mBtn.textContent = '\uD83C\uDFB5';
+    } else {
+      audio.volume = 0.35;
+      audio.play().catch(function(){});
+      mBtn.textContent = '\uD83D\uDD07';
+    }
+    playing = !playing;
+  });
+})();
+</script>
+</body>
+</html>
