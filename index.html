@@ -484,21 +484,7 @@ html,body{max-width:100vw;}
 
 <!-- ════════ OPENING: LIGHT THE LAMP ════════ -->
 <div id="lampScreen">
-  <svg class="lamp-logo" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="R and T monogram">
-    <defs>
-      <linearGradient id="lgGold" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#e2b878"/><stop offset=".5" stop-color="#c8965a"/><stop offset="1" stop-color="#9a6830"/>
-      </linearGradient>
-      <linearGradient id="lgBright" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#f6dca0"/><stop offset=".45" stop-color="#dcaa64"/><stop offset="1" stop-color="#a87838"/>
-      </linearGradient>
-    </defs>
-    <circle cx="512" cy="512" r="484" fill="none" stroke="url(#lgGold)" stroke-width="10"/>
-    <circle cx="512" cy="512" r="452" fill="none" stroke="url(#lgGold)" stroke-width="3" opacity=".7"/>
-    <text x="312" y="684" text-anchor="middle" font-family="Marcellus,serif" font-size="420" fill="url(#lgGold)">R</text>
-    <text x="712" y="684" text-anchor="middle" font-family="Marcellus,serif" font-size="420" fill="url(#lgGold)">T</text>
-    <text x="512" y="716" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-weight="600" font-size="310" fill="url(#lgBright)">&amp;</text>
-  </svg>
+ <img class="lamp-logo" src="logo.png" alt="R and T monogram" />
   <div class="lamp-word">A Wedding Invitation</div>
 
   <div class="lamp-wrap" id="lampWrap" role="button" tabindex="0" aria-label="Light the lamp to open the invitation">
@@ -630,16 +616,16 @@ html,body{max-width:100vw;}
   </section>
 
   <!-- ORDER OF THE CEREMONY -->
-  <section class="order-sec">
+  <!-- <section class="order-sec">
     <div class="order-in shell">
       <p class="sec-eyebrow rv">Save the Date</p>
       <h2 class="sec-title rv d1">Order of the Day</h2>
 
       <div class="timeline" style="margin-top:48px;">
         <div class="t-item rv">
-          <div class="t-time">9.00 AM</div>
-          <div class="t-name">Lighting of the Oil Lamp</div>
-          <div class="t-desc">The ceremony begins at the auspicious hour.</div>
+          <div class="t-time">10.00 AM</div>
+          <div class="t-name">Poruwa Ceremony</div>
+          <div class="t-desc">Traditional rites upon the Poruwa, with Jayamangala Gatha blessings.</div>
         </div>
         <div class="t-item rv d1">
           <div class="t-time">9.30 AM</div>
@@ -658,14 +644,14 @@ html,body{max-width:100vw;}
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- VENUE + MAP -->
   <section class="venue-sec">
     <div class="shell">
       <p class="sec-eyebrow rv">The Venue</p>
-      <h2 class="sec-title rv d1">Grand Palace Banquet Hall</h2>
-      <p class="venue-city rv d1">Colombo, Sri Lanka</p>
+      <h2 class="sec-title rv d1">Risenra Banquet Hall</h2>
+      <p class="venue-city rv d1">Kalutara, Sri Lanka</p>
       <p class="venue-words rv d1">
         We can't wait to celebrate with you — a morning of blessings,
         a table full of food, and a day filled with love and laughter.
@@ -733,29 +719,20 @@ html,body{max-width:100vw;}
    ✏️  EDIT EVERYTHING HERE — nothing else needs to change
    ═══════════════════════════════════════════════════════════ */
 var CONFIG = {
-  /* Wedding date & time (Sri Lanka time).
-     Format: 'YYYY-MM-DDTHH:MM:00+05:30'
-     NOTE: must be a FUTURE date for the countdown to run.   */
-  weddingDate : '2027-02-15T09:00:00+05:30',
+  weddingDate : '2026-07-31T09:00:00+05:30',   // 31 July 2026, 9:00 AM Sri Lanka time
 
-  /* RSVP deadline shown as text */
-  rsvpDeadline: '1 February 2027',
+  rsvpDeadline: '12 July 2026',
 
-  /* WhatsApp contacts — number in international format, no + or spaces.
-     Example: 0771234567  →  '94771234567'                   */
   whatsapp: [
-    { name: 'Rashan', number: '94XXXXXXXXX' },
-    { name: 'Taniya', number: '94XXXXXXXXX' }
+    { name: 'Rashan', number: '94716162540' },
+    { name: 'Taniya', number: '94776896158' }
   ],
 
-  /* Pre-filled message guests will send */
   waMessage : "Hi! We would love to attend Rashan & Taniya's wedding \uD83C\uDF89",
 
-  /* Venue (used for footer + map) */
-  venueShort: 'Grand Palace Banquet Hall, Colombo',
-  mapQuery  : 'Grand Palace Banquet Hall Colombo Sri Lanka'
+  venueShort: 'Risenra Banquet Hall, Panorama Hotel Kalutara',
+  mapQuery  : 'Risenra Banquet Hall Panorama Hotel Kalutara Sri Lanka'
 };
-/* ═══════════════════════════════════════════════════════════ */
 
 (function(){
   var lit = false;
